@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book an Appointment | Rewind Looks Salon | Premium Beauty Salon</title>
+    <meta name="description" content="Schedule your luxury hair, nail, or makeup appointment online at Rewind Looks Salon. Choose your preferred service, date, and time for an elite beauty experience.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="luxury">
+    <!-- Navbar (Same as index.html) -->
+    <nav class="navbar sticky">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Rewind Looks</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="shop.html">Shop</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-controls">
+                <a href="book.html" class="btn active">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Banner -->
+    <section class="inner-banner" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/salon_hero.png') center/cover;">
+        <div class="container animate-fade-up">
+            <h1>Book Appointment</h1>
+            <p>Schedule your next beauty experience with our expert team.</p>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div style="max-width: 800px; margin: 0 auto; background-color: var(--bg-color); padding: 50px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-color);" class="animate-fade-up">
+                <form id="bookingForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <label for="b_name" style="display: block; margin-bottom: 8px;">Full Name *</label>
+                            <input type="text" id="b_name" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: var(--bg-alt); color: var(--text-color); border-radius: var(--radius);">
+                        </div>
+                        <div>
+                            <label for="b_phone" style="display: block; margin-bottom: 8px;">Phone Number *</label>
+                            <input type="tel" id="b_phone" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: var(--bg-alt); color: var(--text-color); border-radius: var(--radius);">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label for="b_service" style="display: block; margin-bottom: 8px;">Select Service *</label>
+                        <select id="b_service" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: var(--bg-alt); color: var(--text-color); border-radius: var(--radius); appearance: none;">
+                            <option value="">-- Choose a Service --</option>
+                            <option value="Hair Styling">Hair Styling & Treatment</option>
+                            <option value="Nail Art">Nail Extensions & Art</option>
+                            <option value="Makeup">Bridal & Party Makeup</option>
+                            <option value="Lashes">Lash Extensions</option>
+                            <option value="Multiple">Multiple Services</option>
+                        </select>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <label for="b_date" style="display: block; margin-bottom: 8px;">Preferred Date *</label>
+                            <input type="date" id="b_date" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: var(--bg-alt); color: var(--text-color); border-radius: var(--radius);">
+                        </div>
+                        <div>
+                            <label for="b_time" style="display: block; margin-bottom: 8px;">Preferred Time *</label>
+                            <input type="time" id="b_time" required style="width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: var(--bg-alt); color: var(--text-color); border-radius: var(--radius);">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <label for="b_message" style="display: block; margin-bottom: 8px;">Additional Notes (Optional)</label>
+                        <textarea id="b_message" rows="4" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: var(--bg-alt); color: var(--text-color); border-radius: var(--radius);"></textarea>
+                    </div>
+
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Or book directly via WhatsApp for faster response: <a href="https://wa.me/919971953687?text=I%20want%20to%20book%20an%20appointment" class="text-primary hover-lift">Click Here</a></p>
+
+                    <button type="submit" class="btn hover-lift" style="width: 100%; padding: 15px; font-size: 1.1rem;">Confirm Appointment Request</button>
+                    <div id="bookingStatus" style="margin-top: 15px; text-align: center; display: none; font-weight: bold;"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 class="logo" style="margin-bottom: 20px;">Rewind Looks</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Premium Beauty Since 2009. We specialize in luxury hair, makeup, and nail services.</p>
+                    <div class="social-links">
+                        <a href="#" class="hover-lift"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover-lift"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover-lift"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="gallery.html">Lookbook</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html#hair">Hair Styling</a></li>
+                        <li><a href="services.html#nails">Nail Art</a></li>
+                        <li><a href="services.html#makeup">Bridal Makeup</a></li>
+                        <li><a href="services.html#lashes">Extensions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <p style="margin-bottom: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 10px;"></i> Shop No 8, Saya Zion, Gaur City 1, Greater Noida 201318</p>
+                    <p style="margin-bottom: 10px;"><i class="fas fa-phone-alt" style="color: var(--primary); margin-right: 10px;"></i> +91 99719 53687</p>
+                    <p><i class="fas fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> info@rewindlooks.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Rewind Looks Salon. All Rights Reserved. | <a href="privacy-policy.html">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/919971953687" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Check URL params for pre-selecting service
+        const urlParams = new URLSearchParams(window.location.search);
+        const preService = urlParams.get('service');
+        if (preService) {
+            const select = document.getElementById('b_service');
+            for(let i=0; i < select.options.length; i++) {
+                if(select.options[i].value.toLowerCase().includes(preService.toLowerCase())) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const statusBox = document.getElementById('bookingStatus');
+            btn.innerText = 'Processing...';
+            btn.disabled = true;
+
+            const payload = {
+                name: document.getElementById('b_name').value,
+                phone: document.getElementById('b_phone').value,
+                service: document.getElementById('b_service').value,
+                date: document.getElementById('b_date').value,
+                time: document.getElementById('b_time').value,
+                message: document.getElementById('b_message').value
+            };
+
+            try {
+                const res = await fetch(`${window.API_CONFIG.BASE_URL}/api/book`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if(res.ok) {
+                    statusBox.innerText = 'Request Dispatched! We will call you shortly to confirm.';
+                    statusBox.style.color = 'var(--primary)';
+                    statusBox.style.display = 'block';
+                    e.target.reset();
+                } else {
+                    throw new Error('Failed to book');
+                }
+            } catch(err) {
+                statusBox.innerText = 'Server error. Please try booking via WhatsApp.';
+                statusBox.style.color = '#ff4444';
+                statusBox.style.display = 'block';
+            } finally {
+                btn.innerText = 'Confirm Appointment Request';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

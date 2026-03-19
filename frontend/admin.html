@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Rewind Looks Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--bg-alt);
+            border-right: 1px solid var(--border-color);
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .admin-sidebar a {
+            padding: 15px 30px;
+            display: block;
+            color: var(--text-color);
+            border-left: 3px solid transparent;
+            font-weight: 500;
+        }
+        .admin-sidebar a:hover, .admin-sidebar a.active {
+            background-color: var(--bg-color);
+            border-left-color: var(--primary);
+            color: var(--primary);
+        }
+        .admin-content {
+            flex: 1;
+            padding: 40px;
+            background-color: var(--bg-color);
+        }
+        .admin-card {
+            background-color: var(--bg-alt);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        .hidden { display: none; }
+        
+        /* Basic Login Overlay */
+        #loginOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            background-color: var(--bg-alt);
+            padding: 40px;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+    </style>
+</head>
+<body data-theme="luxury">
+
+    <!-- Login Overlay -->
+    <div id="loginOverlay">
+        <div class="login-box">
+            <h2 style="color: var(--primary); margin-bottom: 20px;">Admin Login</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 0.9rem;">For demo purposes, use <br>user: <b>admin</b> | pass: <b>password</b></p>
+            <input type="text" id="adminUser" placeholder="Username" style="width: 100%; padding: 12px; margin-bottom: 15px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 4px;">
+            <input type="password" id="adminPass" placeholder="Password" style="width: 100%; padding: 12px; margin-bottom: 20px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 4px;">
+            <button onclick="login()" class="btn" style="width: 100%;">Login to Dashboard</button>
+            <p id="loginErr" style="color: #ff4444; margin-top: 15px; display: none;">Invalid Credentials</p>
+        </div>
+    </div>
+
+    <div class="admin-layout hidden" id="dashboard">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <h3 style="padding: 0 30px; margin-bottom: 30px; color: var(--primary); font-family: var(--font-heading);">Salon Admin</h3>
+            <a href="#" class="active" onclick="switchTab('bookings', this)"><i class="far fa-calendar-check" style="width: 25px;"></i> Bookings</a>
+            <a href="#" onclick="switchTab('contacts', this)"><i class="far fa-envelope" style="width: 25px;"></i> Messages</a>
+            <a href="#" onclick="switchTab('products', this)"><i class="fas fa-shopping-bag" style="width: 25px;"></i> Add Product</a>
+            <div style="flex-grow: 1;"></div>
+            <a href="index.html" style="border-top: 1px solid var(--border-color);"><i class="fas fa-external-link-alt" style="width: 25px;"></i> Back to Site</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt" style="width: 25px;"></i> Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            
+            <!-- Bookings Tab -->
+            <div id="tab-bookings" class="admin-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Recent Bookings</h2>
+                    <button class="btn btn-outline" onclick="loadBookings()" style="padding: 8px 15px; font-size: 0.8rem;"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>Client Name</th>
+                                <th>Phone</th>
+                                <th>Service</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <tr><td colspan="5" class="text-center text-muted">Loading bookings...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Contacts Tab -->
+            <div id="tab-contacts" class="admin-card hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Contact Inquiries</h2>
+                    <button class="btn btn-outline" onclick="loadContacts()" style="padding: 8px 15px; font-size: 0.8rem;"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Date</th>
+                                <th style="width: 20%;">Name</th>
+                                <th style="width: 20%;">Email</th>
+                                <th style="width: 45%;">Message</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contactsTableBody">
+                            <tr><td colspan="4" class="text-center text-muted">Loading contacts...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Add Product Tab -->
+            <div id="tab-products" class="admin-card hidden">
+                <h2>Add New Product</h2>
+                <form id="addProductForm" style="max-width: 600px; margin-top: 20px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px;">Product Name</label>
+                        <input type="text" id="p_name" required style="width: 100%; padding: 10px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color);">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px;">Price (₹)</label>
+                            <input type="number" id="p_price" required style="width: 100%; padding: 10px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color);">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px;">Category</label>
+                            <input type="text" id="p_cat" required placeholder="e.g. Hair Care" style="width: 100%; padding: 10px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color);">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px;">Image URL</label>
+                        <input type="text" id="p_img" placeholder="images/filename.jpg or http..." required style="width: 100%; padding: 10px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color);">
+                    </div>
+
+                    <div style="margin-bottom: 25px;">
+                        <label style="display: block; margin-bottom: 5px;">Description</label>
+                        <textarea id="p_desc" rows="4" required style="width: 100%; padding: 10px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color);"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">Save Product</button>
+                    <span id="productStatus" style="margin-left: 15px; font-weight: bold;"></span>
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer in Admin Dashboard -->
+    <footer class="footer" style="border-top: 1px solid var(--border-color); margin-top: 0;">
+        <div class="container" style="padding: 20px 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; opacity: 0.7;">
+                <p>&copy; 2026 Admin Panel - Rewind Looks Salon.</p>
+                <div class="social-links" style="margin: 0;">
+                    <a href="index.html" class="hover-lift"><i class="fas fa-home"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin JS Logging and Logic -->
+    <script>
+        const API_BASE = `${window.API_CONFIG.BASE_URL}/api`;
+
+        // Fake Simple Auth
+        function login() {
+            const u = document.getElementById('adminUser').value;
+            const p = document.getElementById('adminPass').value;
+            if (u === 'admin' && p === 'password') {
+                sessionStorage.setItem('isAdmin', 'true');
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('dashboard').classList.remove('hidden');
+                loadBookings();
+                loadContacts();
+            } else {
+                document.getElementById('loginErr').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isAdmin');
+            window.location.reload();
+        }
+
+        window.onload = () => {
+            if (sessionStorage.getItem('isAdmin') === 'true') {
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('dashboard').classList.remove('hidden');
+                loadBookings();
+                loadContacts();
+            }
+        };
+
+        // Tab Switching
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.admin-sidebar a').forEach(a => a.classList.remove('active'));
+            el.classList.add('active');
+
+            document.getElementById('tab-bookings').classList.add('hidden');
+            document.getElementById('tab-contacts').classList.add('hidden');
+            document.getElementById('tab-products').classList.add('hidden');
+
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+        }
+
+        // Fetch Bookings
+        async function loadBookings() {
+            const tbody = document.getElementById('bookingsTableBody');
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Refreshing...</td></tr>';
+            try {
+                const res = await fetch(`${API_BASE}/bookings`);
+                const data = await res.json();
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center">No bookings found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                data.forEach(b => {
+                    tbody.innerHTML += `
+                        <tr class="animate-fade-up">
+                            <td><strong>${b.date}</strong><br><span style="font-size:0.8rem;color:var(--text-muted);">${b.time}</span></td>
+                            <td>${b.name}</td>
+                            <td><a href="tel:${b.phone}" style="color:var(--primary);">${b.phone}</a></td>
+                            <td><span style="background:var(--bg-color);padding:3px 8px;border-radius:4px;border:1px solid var(--border-color);">${b.service}</span></td>
+                            <td style="font-size:0.9rem;">${b.message || '-'}</td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center" style="color:red;">Error connecting to server.</td></tr>';
+            }
+        }
+
+        // Fetch Contacts
+        async function loadContacts() {
+            const tbody = document.getElementById('contactsTableBody');
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Refreshing...</td></tr>';
+            try {
+                const res = await fetch(`${API_BASE}/contacts`);
+                const data = await res.json();
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="text-center">No messages found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                data.forEach(c => {
+                    const d = new Date(c.createdAt).toLocaleDateString();
+                    tbody.innerHTML += `
+                        <tr class="animate-fade-up">
+                            <td style="font-size:0.9rem;color:var(--text-muted);">${d}</td>
+                            <td>${c.name}</td>
+                            <td><a href="mailto:${c.email}" style="color:var(--primary);">${c.email}</a></td>
+                            <td style="white-space: pre-wrap; font-size: 0.95rem;">${c.message}</td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center" style="color:red;">Error connecting to server.</td></tr>';
+            }
+        }
+
+        // Add Product Form Submit
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const status = document.getElementById('productStatus');
+            btn.innerText = 'Saving...';
+            btn.disabled = true;
+
+            const payload = {
+                name: document.getElementById('p_name').value,
+                price: parseFloat(document.getElementById('p_price').value),
+                category: document.getElementById('p_cat').value,
+                image: document.getElementById('p_img').value,
+                description: document.getElementById('p_desc').value
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}/products`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) {
+                    status.innerText = 'Product Added Successfully!';
+                    status.style.color = '#25d366';
+                    e.target.reset();
+                    setTimeout(() => status.innerText = '', 3000);
+                } else {
+                    throw new Error('Failed to add product');
+                }
+            } catch(err) {
+                status.innerText = 'Error adding product.';
+                status.style.color = '#ff4444';
+            } finally {
+                btn.innerText = 'Save Product';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

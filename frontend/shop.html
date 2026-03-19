@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Luxury Beauty Products | Hair Care & Makeup | Rewind Looks Salon</title>
+    <meta name="description" content="Buy premium hair care, nail kits, and bridal makeup sets at Rewind Looks Salon. Shop professional-grade products used by our expert stylists.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="luxury">
+    <!-- Navbar (Same as index.html) -->
+    <nav class="navbar sticky">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Rewind Looks</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="shop.html" class="active">Shop</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-controls">
+                <a href="book.html" class="btn">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Banner -->
+    <section class="inner-banner" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/salon_hero.png') center/cover;">
+        <div class="container animate-fade-up">
+            <h1>Our Shop</h1>
+            <p>Premium Hair & Beauty Products for Your Home Care</p>
+        </div>
+    </section>
+
+    <!-- Product Listing -->
+    <section class="py-5" style="background-color: var(--bg-color);">
+        <div class="container">
+            <div id="productGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;" class="animate-fade-up">
+                <!-- Products will be loaded here via JS -->
+                <div class="text-center" style="grid-column: 1/-1; padding: 50px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
+                    <p>Loading premium products...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 class="logo" style="margin-bottom: 20px;">Rewind Looks</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Premium Beauty Since 2009. We specialize in luxury hair, makeup, and nail services.</p>
+                    <div class="social-links">
+                        <a href="#" class="hover-lift"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover-lift"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover-lift"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="shop.html" class="active">Shop</a></li>
+                        <li><a href="gallery.html">Lookbook</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html#hair">Hair Styling</a></li>
+                        <li><a href="services.html#nails">Nail Art</a></li>
+                        <li><a href="services.html#makeup">Bridal Makeup</a></li>
+                        <li><a href="services.html#lashes">Extensions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <p style="margin-bottom: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 10px;"></i> Shop No 8, Saya Zion, Gaur City 1, Greater Noida 201318</p>
+                    <p style="margin-bottom: 10px;"><i class="fas fa-phone-alt" style="color: var(--primary); margin-right: 10px;"></i> +91 99719 53687</p>
+                    <p><i class="fas fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> info@rewindlooks.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Rewind Looks Salon. All Rights Reserved. | <a href="privacy-policy.html">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/919971953687" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('productGrid');
+            
+            const fallbackProducts = [
+                { _id: 'f1', name: 'Sp Luxeoil Serum', price: 2199, category: 'Hair Care', image: 'images/sp_luxeoil_serum.png', description: 'Reconstructive Transformative Elixir with keratin.' },
+                { _id: 'f2', name: 'GK Hair Shampoo', price: 1850, category: 'Hair Care', image: 'images/hair_styling_real.png', description: 'Moisturizing color protection shampoo.' },
+                { _id: 'f3', name: 'Premium Nail Kit', price: 2500, category: 'Nails', image: 'images/nail_art_real.png', description: 'Professional grade nail care and shine.' },
+                { _id: 'f4', name: 'Bridal Glow Set', price: 4500, category: 'Makeup', image: 'images/bridal_makeup_real.png', description: 'Complete kit for a radiant bridal look.' }
+            ];
+
+            try {
+                const res = await fetch(`${window.API_CONFIG.BASE_URL}/api/products`);
+                const products = await res.json();
+                
+                if(!products || products.length === 0) {
+                    renderProducts(fallbackProducts);
+                } else {
+                    renderProducts(products);
+                }
+            } catch(err) {
+                console.warn('API unavailable, using fallback products');
+                renderProducts(fallbackProducts);
+            }
+
+            function renderProducts(products) {
+                grid.innerHTML = '';
+                products.forEach(p => {
+                    grid.innerHTML += `
+                        <div class="product-card hover-lift hover-zoom visible" style="display: flex; flex-direction: column;">
+                            <div class="img-zoom-container">
+                                <img src="${p.image}" alt="${p.name}" style="width: 100%; height: 250px; object-fit: cover;">
+                            </div>
+                            <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column;">
+                                <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--primary); font-weight: 600; letter-spacing: 1px;">${p.category}</span>
+                                <h3 style="margin: 10px 0; font-size: 1.2rem;">${p.name}</h3>
+                                <p style="color: var(--primary); font-size: 1.2rem; font-weight: 700; margin-bottom: 15px;">₹${p.price}</p>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; flex-grow: 1;">${p.description}</p>
+                                
+                                <div style="display: flex; gap: 10px;">
+                                    <a href="product-detail.html?id=${p._id}" class="btn btn-outline" style="flex: 1; text-align: center; padding: 10px;">Details</a>
+                                    <a href="https://wa.me/919971953687?text=Order%20${encodeURIComponent(p.name)}" target="_blank" class="btn" style="flex: 1; text-align: center; padding: 10px; background-color: #25d366; color: white;">Order</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

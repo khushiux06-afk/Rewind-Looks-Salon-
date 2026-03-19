@@ -1,0 +1,8 @@
+node_modules/
+.env
+.DS_Store
+*.log
+.gemini/
+.agents/
+backend/node_modules/
+frontend/node_modules/

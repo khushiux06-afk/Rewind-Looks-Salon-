@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Rewind Looks Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="luxury">
+    <!-- Navbar (Same as index.html) -->
+    <nav class="navbar sticky">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Rewind Looks</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="shop.html" class="active">Shop</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-controls">
+                <a href="book.html" class="btn">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Banner (Simplified for details) -->
+    <section class="inner-banner" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/salon_hero.png') center/cover; padding: 60px 0;">
+        <div class="container animate-fade-up">
+            <h1 id="pageTitle">Product Details</h1>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container" id="productContainer">
+            <div style="text-align: center; padding: 100px 0;" class="animate-fade-up">
+                <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary);"></i>
+                <p class="mt-2" style="margin-top: 20px;">Fetching premium product details...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 class="logo" style="margin-bottom: 20px;">Rewind Looks</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Premium Beauty Since 2009. We specialize in luxury hair, makeup, and nail services.</p>
+                    <div class="social-links">
+                        <a href="#" class="hover-lift"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover-lift"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover-lift"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="shop.html" class="active">Shop</a></li>
+                        <li><a href="gallery.html">Lookbook</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html#hair">Hair Styling</a></li>
+                        <li><a href="services.html#nails">Nail Art</a></li>
+                        <li><a href="services.html#makeup">Bridal Makeup</a></li>
+                        <li><a href="services.html#lashes">Extensions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <p style="margin-bottom: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 10px;"></i> Shop No 8, First Floor, Commercial Space, SAYA ZION, Gaur City 1, Greater Noida 201318</p>
+                    <p style="margin-bottom: 10px;"><i class="fas fa-phone-alt" style="color: var(--primary); margin-right: 10px;"></i> +91 99719 53687</p>
+                    <p><i class="fas fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> info@rewindlooks.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Rewind Looks Salon. All Rights Reserved. | <a href="privacy-policy.html">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/919971953687" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('productContainer');
+            const pageTitle = document.getElementById('pageTitle');
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id') ? urlParams.get('id').trim() : null;
+
+            const fallbackProducts = [
+                { _id: 'f1', name: 'Sp Luxeoil Serum', price: 2199, category: 'Hair Care', image: 'images/sp_luxeoil_serum.png', description: 'Reconstructive Transformative Elixir with keratin.' },
+                { _id: 'f2', name: 'GK Hair Shampoo', price: 1850, category: 'Hair Care', image: 'images/hair_styling_real.png', description: 'Moisturizing color protection shampoo.' },
+                { _id: 'f3', name: 'Premium Nail Kit', price: 2500, category: 'Nails', image: 'images/nail_art_real.png', description: 'Professional grade nail care and shine.' },
+                { _id: 'f4', name: 'Bridal Glow Set', price: 4500, category: 'Makeup', image: 'images/bridal_makeup_real.png', description: 'Complete kit for a radiant bridal look.' }
+            ];
+
+            if(!productId) {
+                container.innerHTML = '<div style="text-align:center;"><p style="color:var(--primary); font-size:1.5rem;">Product not specified.</p><a href="shop.html" class="btn mt-2">Back to Shop</a></div>';
+                return;
+            }
+
+            try {
+                // Fetch specific product
+                const res = await fetch(`${window.API_CONFIG.BASE_URL}/api/products/${productId}`);
+                if(!res.ok) throw new Error('Not found');
+                
+                const p = await res.json();
+                renderProduct(p);
+
+            } catch(err) {
+                console.warn('API unavailable for item, checking fallbacks for ID:', productId);
+                const fp = fallbackProducts.find(item => item._id === productId);
+                if(fp) {
+                    renderProduct(fp);
+                } else {
+                    container.innerHTML = `<div style="text-align:center;"><p style="color:#ff4444; font-size:1.5rem;">Product "${productId}" not found.</p><a href="shop.html" class="btn mt-2">Back to Shop</a></div>`;
+                }
+            }
+
+            function renderProduct(p) {
+                document.title = `${p.name} | Rewind Looks Salon`;
+                pageTitle.innerText = p.name;
+
+                const detailHtml = `
+                    <div style="display: flex; flex-wrap: wrap; gap: 50px; align-items: flex-start;" class="animate-fade-up visible">
+                        <div style="flex: 1; min-width: 300px;">
+                            <img src="${p.image || 'images/salon_hero.png'}" alt="${p.name}" style="border-radius: var(--radius); box-shadow: var(--shadow); width: 100%; object-fit: contain; max-height: 500px; background-color: white;" class="hover-zoom">
+                        </div>
+                        <div style="flex: 1; min-width: 300px;" class="animate-fade-up visible">
+                            <a href="shop.html" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; display: inline-block;" class="hover-lift">&larr; Back to Shop</a>
+                            <br>
+                            <span style="display: inline-block; padding: 5px 15px; background-color: var(--bg-alt); color: var(--primary); border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 15px;">${p.category}</span>
+                            
+                            <h1 style="color: var(--primary); margin-bottom: 15px;">${p.name}</h1>
+                            <h2 style="font-size: 2rem; margin-bottom: 25px;">₹${p.price.toFixed(2)}</h2>
+                            
+                            <div style="margin-bottom: 30px; line-height: 1.8; color: var(--text-color);">
+                                <h3>About this product</h3>
+                                <p class="text-muted" style="white-space: pre-wrap;">${p.description}</p>
+                            </div>
+                            
+                            <div style="display: flex; gap: 20px;">
+                                <a href="https://wa.me/919971953687?text=Hi!%20I%20would%20like%20to%20order:%0A%0AProduct:%20${encodeURIComponent(p.name)}%0APrice:%20%E2%82%B9${p.price.toFixed(2)}" target="_blank" class="btn hover-lift" style="padding: 15px 30px; font-size: 1.1rem; background-color: #25d366; color: white;">Order via WhatsApp <i class="fab fa-whatsapp" style="margin-left: 10px;"></i></a>
+                            </div>
+                            
+                            <div style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                                <p><i class="fas fa-truck" style="margin-right: 10px; color: var(--primary);"></i> In-store pickup & delivery available.</p>
+                                <p><i class="fas fa-check-circle" style="margin-right: 10px; color: var(--primary);"></i> 100% Authentic Professional Product.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML = detailHtml;
+            }
+        });
+    </script>
+</body>
+</html>
