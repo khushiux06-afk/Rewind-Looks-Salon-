@@ -103,13 +103,13 @@ img {
   z-index: 0;
   transform: translate(-50%, -50%);
   object-fit: cover;
-  filter: blur(1.5px) brightness(0.75); /* Reduced blur and increased brightness for clarity */
+  filter: brightness(0.65); /* No blur — true HD quality video */
 }
 
 .hero-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.45); /* Reduced overlay opacity for clearer view */
+  background: rgba(0, 0, 0, 0.5); /* Slightly stronger overlay to ensure text readability without blur */
   z-index: 1;
 }
 
