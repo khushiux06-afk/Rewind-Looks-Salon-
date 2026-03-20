@@ -1,10 +1,39 @@
 // --- Global Config ---
 window.API_CONFIG = {
-  // Replace this with your live Render/Railway URL later (e.g., https://rewind-salon-api.onrender.com)
   BASE_URL: 'http://localhost:5000'
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  // --- Theme Toggle (Dark / Light Mode) ---
+  const body = document.body;
+  const themeToggle = document.querySelector('.theme-toggle');
+
+  // Load saved theme from localStorage
+  const savedTheme = localStorage.getItem('rewindTheme') || 'luxury';
+  body.setAttribute('data-theme', savedTheme);
+  updateToggleIcon(savedTheme);
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const current = body.getAttribute('data-theme');
+      const next = current === 'luxury' ? 'modern' : 'luxury';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('rewindTheme', next);
+      updateToggleIcon(next);
+    });
+  }
+
+  function updateToggleIcon(theme) {
+    if (!themeToggle) return;
+    if (theme === 'luxury') {
+      themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      themeToggle.title = 'Switch to Light Mode';
+    } else {
+      themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      themeToggle.title = 'Switch to Dark Mode';
+    }
+  }
 
   // --- Sticky Navbar ---
   const navbar = document.querySelector('.navbar');
@@ -35,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Add a slight delay for a more professional feel
         setTimeout(() => {
           entry.target.classList.add('visible');
         }, 100);

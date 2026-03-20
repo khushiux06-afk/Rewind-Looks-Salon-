@@ -251,25 +251,43 @@ img {
   gap: 20px;
 }
 
-/* Theme Toggle */
+/* Theme Toggle Button */
 .theme-toggle {
   background: none;
-  border: none;
-  color: var(--text-color);
-  font-size: 1.2rem;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background-color: var(--bg-alt);
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
-  color: var(--primary);
+  background-color: var(--primary);
+  color: var(--bg-color);
+  transform: rotate(20deg) scale(1.1);
+}
+
+/* Light mode body overrides */
+[data-theme="modern"] body,
+[data-theme="modern"] .navbar,
+[data-theme="modern"] .footer {
+  color: var(--text-color);
+}
+
+[data-theme="modern"] .nav-links a {
+  color: var(--text-color);
+}
+
+[data-theme="modern"] .navbar.sticky {
+  background-color: #ffffff;
+  border-bottom: 1px solid #eeeeee;
 }
 
 /* Mobile Menu Button */
