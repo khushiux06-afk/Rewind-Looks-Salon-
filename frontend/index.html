@@ -110,6 +110,28 @@
         </div>
     </section>
 
+    <!-- Luxury Shop Selection -->
+    <section class="shop-preview py-5">
+        <div class="container">
+            <div class="text-center mb-2 animate-fade-up">
+                <h2 class="text-primary" style="font-size: 3rem; margin-bottom: 20px;">Luxury Shop</h2>
+                <div style="width: 80px; height: 4px; background: var(--primary); margin: 0 auto 40px;"></div>
+            </div>
+            
+            <div id="featuredProducts" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;" class="animate-fade-up">
+                <!-- Products will load here -->
+                <div class="text-center" style="grid-column: 1/-1; padding: 30px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
+                    <p>Fetching curated collection...</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-2 animate-fade-up" style="margin-top: 50px;">
+                <a href="shop.html" class="btn btn-outline hover-lift">View All Products</a>
+            </div>
+        </div>
+    </section>
+
     <!-- Testimonials Preview -->
     <section class="testimonials py-5" style="background-color: var(--bg-alt);">
         <div class="container">
@@ -200,5 +222,68 @@
     </a>
 
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('featuredProducts');
+            if(!grid) return;
+
+            const fallbackProducts = [
+                { _id: 'f1', name: 'Sp Luxeoil Serum', price: 2199, category: 'Hair Care', image: 'images/sp_luxeoil_serum.png', description: 'Reconstructive Transformative Elixir with keratin.' },
+                { _id: 'f2', name: 'GK Hair Shampoo', price: 1850, category: 'Hair Care', image: 'images/hair_styling_real.png', description: 'Moisturizing color protection shampoo.' },
+                { _id: 'f3', name: 'Premium Nail Kit', price: 2500, category: 'Nails', image: 'images/nail_art_real.png', description: 'Professional grade nail care and shine.' },
+                { _id: 'f4', name: 'Bridal Glow Set', price: 4500, category: 'Makeup', image: 'images/bridal_makeup_real.png', description: 'Complete kit for a radiant bridal look.' }
+            ];
+
+            try {
+                const res = await fetch(`${window.API_CONFIG.BASE_URL}/api/products`);
+                let products = await res.json();
+                
+                if(!products || products.length === 0) {
+                    renderProducts(fallbackProducts.slice(0, 4));
+                } else {
+                    renderProducts(products.slice(0, 4));
+                }
+            } catch(err) {
+                console.warn('API unavailable, using fallback products');
+                renderProducts(fallbackProducts.slice(0, 4));
+            }
+
+            function renderProducts(products) {
+                grid.innerHTML = '';
+                products.forEach(p => {
+                    grid.innerHTML += `
+                        <div class="product-card hover-lift hover-zoom visible" style="display: flex; flex-direction: column;">
+                            <div class="img-zoom-container">
+                                <img src="${p.image}" alt="${p.name}" style="width: 100%; height: 250px; object-fit: cover;">
+                            </div>
+                            <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column;">
+                                <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--primary); font-weight: 600; letter-spacing: 1px;">${p.category}</span>
+                                <h3 style="margin: 10px 0; font-size: 1.2rem;">${p.name}</h3>
+                                <p style="color: var(--primary); font-size: 1.2rem; font-weight: 700; margin-bottom: 15px;">₹${p.price}</p>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; flex-grow: 1;">${p.description}</p>
+                                
+                                <div style="display: flex; gap: 10px;">
+                                    <a href="product-detail.html?id=${p._id}" class="btn btn-outline" style="flex: 1; text-align: center; padding: 10px;">Details</a>
+                                    <a href="https://wa.me/919971953687?text=Order%20${encodeURIComponent(p.name)}" target="_blank" class="btn" style="flex: 1; text-align: center; padding: 10px; background-color: #25d366; color: white;">Order</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // Re-observe animations for newly added cards
+                const observerOptions = { threshold: 0.1 };
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+                grid.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+            }
+        });
+    </script>
 </body>
 </html>
