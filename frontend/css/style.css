@@ -184,14 +184,47 @@ img {
 .logo {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 80px;
+  overflow: hidden;
+  position: relative;
 }
 
 .logo img {
+  height: 220px !important; /* Scale up to crop padding */
+  width: auto !important;
+  object-fit: contain;
+  transform: translateY(-5px); /* Adjust vertical center if logo is off-center */
   transition: transform 0.3s ease;
 }
 
 .logo:hover img {
-  transform: scale(1.05);
+  transform: translateY(-5px) scale(1.1);
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 200px;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.footer-logo img {
+  height: 350px !important; /* Even larger for footer */
+  width: auto !important;
+  object-fit: contain;
+  transform: translateX(-30px); /* Center the logo content specifically */
+  filter: brightness(1.1);
+  transition: transform 0.3s ease;
+}
+
+.footer-logo:hover img {
+  transform: translateX(-30px) scale(1.05);
 }
 
 .nav-links {
