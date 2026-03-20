@@ -195,8 +195,9 @@ img {
   height: 220px !important; /* Scale up to crop padding */
   width: auto !important;
   object-fit: contain;
-  transform: translateY(-5px); /* Adjust vertical center if logo is off-center */
+  transform: translateY(-5px);
   transition: transform 0.3s ease;
+  mix-blend-mode: screen; /* Removes black background, keeps gold logo */
 }
 
 .logo:hover img {
@@ -215,11 +216,11 @@ img {
 }
 
 .footer-logo img {
-  height: 350px !important; /* Even larger for footer */
+  height: 350px !important;
   width: auto !important;
   object-fit: contain;
-  transform: translateX(-30px); /* Center the logo content specifically */
-  filter: brightness(1.1);
+  transform: translateX(-30px);
+  mix-blend-mode: screen; /* Removes black background, keeps gold logo */
   transition: transform 0.3s ease;
 }
 
