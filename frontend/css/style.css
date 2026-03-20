@@ -103,12 +103,13 @@ img {
   z-index: 0;
   transform: translate(-50%, -50%);
   object-fit: cover;
+  filter: blur(4px) brightness(0.6); /* Added blur and reduced brightness */
 }
 
 .hero-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7));
+  background: rgba(0, 0, 0, 0.55); /* Replaced gradient with solid dark tint */
   z-index: 1;
 }
 
