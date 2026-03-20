@@ -239,13 +239,13 @@
                 let products = await res.json();
                 
                 if(!products || products.length === 0) {
-                    renderProducts(fallbackProducts.slice(0, 4));
+                    renderProducts(fallbackProducts.slice(0, 3));
                 } else {
-                    renderProducts(products.slice(0, 4));
+                    renderProducts(products.slice(0, 3));
                 }
             } catch(err) {
                 console.warn('API unavailable, using fallback products');
-                renderProducts(fallbackProducts.slice(0, 4));
+                renderProducts(fallbackProducts.slice(0, 3));
             }
 
             function renderProducts(products) {
