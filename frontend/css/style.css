@@ -275,19 +275,43 @@ img {
 }
 
 /* Light mode body overrides */
-[data-theme="modern"] body,
-[data-theme="modern"] .navbar,
+[data-theme="modern"] .navbar.sticky,
 [data-theme="modern"] .footer {
   color: var(--text-color);
 }
 
-[data-theme="modern"] .nav-links a {
+[data-theme="modern"] .navbar.sticky .nav-links a {
   color: var(--text-color);
 }
 
+/* Ensure navbar text is always white in light mode */
+[data-theme="modern"] .navbar,
+[data-theme="modern"] .navbar .menu-btn {
+  color: #ffffff !important;
+}
+
+@media (min-width: 993px) {
+  [data-theme="modern"] .nav-links a {
+    color: #ffffff !important;
+  }
+}
+
+@media (max-width: 992px) {
+  /* Mobile dropdown has white background, so keep text dark */
+  [data-theme="modern"] .nav-links a {
+    color: var(--text-color) !important;
+  }
+}
+
 [data-theme="modern"] .navbar.sticky {
-  background-color: #ffffff;
-  border-bottom: 1px solid #eeeeee;
+  background-color: #111111; /* Dark background to contrast with white text */
+  border-bottom: 1px solid #333333;
+}
+
+/* Fix Footer Logo mixing with background in light theme */
+[data-theme="modern"] .footer-logo img {
+  filter: invert(1) hue-rotate(180deg);
+  mix-blend-mode: darken;
 }
 
 /* Mobile Menu Button */
@@ -464,7 +488,7 @@ img {
   color: white;
   position: relative;
   overflow: hidden;
-  margin-top: 80px; /* offset for sticky nav */
+  padding-top: 80px; /* offset for sticky nav using padding instead of margin */
 }
 
 .inner-banner::before {
