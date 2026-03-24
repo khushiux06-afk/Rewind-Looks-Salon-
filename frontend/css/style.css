@@ -488,7 +488,7 @@ img {
   color: white;
   position: relative;
   overflow: hidden;
-  padding-top: 80px; /* offset for sticky nav using padding instead of margin */
+  margin-top: 80px; /* offset for sticky nav */
 }
 
 .inner-banner::before {
